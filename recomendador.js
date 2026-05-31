@@ -625,6 +625,9 @@ function mostrarResultado() {
     document.getElementById("descripcionAlternativa")
         .textContent = alternativo.descripcion;
 
+    document.getElementById("imagenAlternativa")
+        .src = alternativo.imagen;
+
 }
 
 // =====================================
