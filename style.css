@@ -1,0 +1,626 @@
+/* ==========================================
+   1. ESTILOS BASE Y TIPOGRAFÍA
+   ========================================== */
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: #0f0f0f;
+    color: #fcfbf8;
+}
+
+h1, h2, h3, h4, h5, h6, .font-serif {
+    font-family: 'Playfair Display', serif;
+}
+
+/* ==========================================
+   2. EFECTOS VISUALES (Tarjetas y Botones)
+   ========================================== */
+.gold-gradient-text {
+    background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.btn-gold {
+    background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%);
+    color: #0f0f0f;
+    transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Efecto Hover para Categorías (Galería) */
+.category-card {
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid #333;
+}
+
+.category-img {
+    transition: transform 0.7s ease, filter 0.3s ease;
+    filter: brightness(0.6) grayscale(20%);
+}
+
+.category-card:hover .category-img {
+    transform: scale(1.05);
+    filter: brightness(0.9) grayscale(0%);
+}
+
+.category-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(15,15,15,0.9), transparent);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2rem;
+    transition: background 0.3s ease;
+}
+
+.category-card:hover .category-overlay {
+    background: linear-gradient(to top, rgba(15,15,15,1), rgba(15,15,15,0.2));
+}
+
+/* ==========================================
+   3. ANIMACIONES Y SCROLLBAR (Modal)
+   ========================================== */
+.modal-enter {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+.modal-content-enter {
+    animation: slideUp 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0f0f0f;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d4af37;
+    border-radius: 4px;
+}
+
+/* ==========================================
+   4. PANTALLAS DE CARGA
+   ========================================== */
+.loading-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.loading-screen.hidden, 
+.loading-screen.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: .5s;
+}
+
+.loading-card {
+    width: min(420px, calc(100% - 28px));
+    padding: 28px;
+    border-radius: 24px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.36);
+}
+
+.loading-logo {
+    font-size: 2.4rem;
+    margin-bottom: 10px;
+}
+
+.loading-bar {
+    width: 100%;
+    height: 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+/* Ajuste para la barra de carga interna del juego */
+#loadingScreen.loading-screen {
+    position: absolute;
+    background: #0f0f0f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+}
+
+.loading-box {
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.loading-box .loading-bar {
+    height: 8px;
+    margin: 20px 0;
+}
+
+.loading-fill, 
+#loadingFill {
+    height: 100%;
+    width: 0%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #d4af37, #fcf6ba, #aa771c);
+    transition: width 0.12s linear;
+}
+
+/* ==========================================
+   5. MINI-JUEGO AURA ÉLITE
+   ========================================== */
+.game-screen {
+    display: none;
+    width: 100%;
+}
+
+.game-screen.active {
+    display: flex;
+    justify-content: center;
+    animation: fade .4s ease;
+}
+
+.game-card {
+    width: 100%;
+    background: #1a1a1a;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.5);
+}
+
+.game-top {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.game-top h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-family: 'Playfair Display', serif;
+    background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.game-top p {
+    color: #9ca3af;
+    font-weight: 300;
+}
+
+.game-form {
+    display: grid;
+    gap: 15px;
+}
+
+.game-form input,
+.game-form select {
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(15, 15, 15, 0.8);
+    color: white;
+    outline: none;
+    font-size: 1rem;
+    font-family: 'Lato', sans-serif;
+    transition: 0.3s;
+}
+
+.game-form input:focus,
+.game-form select:focus {
+    border-color: #d4af37;
+}
+
+.game-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%);
+    color: #0f0f0f;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.game-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    padding-bottom: 15px;
+}
+
+.game-header small {
+    color: #d4af37;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+}
+
+.progress {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,.05);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+#progressBar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #aa771c, #fcf6ba, #d4af37);
+    transition: .3s;
+}
+
+#question {
+    margin-bottom: 30px;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+}
+
+.answers {
+    display: grid;
+    gap: 15px;
+}
+
+.answer-btn {
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.03);
+    color: white;
+    transition: .3s;
+    font-family: 'Lato', sans-serif;
+}
+
+.answer-btn:hover {
+    background: rgba(212, 175, 55, 0.1);
+    border-color: #d4af37;
+}
+
+.answer-btn.correct {
+    background: rgba(212, 175, 55, 0.2);
+    border-color: #d4af37;
+    color: #d4af37;
+}
+
+.answer-btn.wrong {
+    background: rgba(255, 0, 0, 0.1);
+    border-color: rgba(255, 0, 0, 0.5);
+    color: #ff6b6b;
+}
+
+.feedback {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: 300;
+    color: #d4af37;
+    letter-spacing: 0.05em;
+}
+
+.result-card {
+    text-align: center;
+}
+
+.result-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #d4af37;
+}
+
+.result-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.result-info div {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.result-info span {
+    display: block;
+    color: #9ca3af;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+}
+
+.result-info strong {
+    font-size: 1.5rem;
+    color: #d4af37;
+}
+
+@keyframes fade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================
+   6. CHATBOT FLOTANTE
+   ========================================== */
+.chatbot {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 60;
+    font-family: 'Lato', sans-serif;
+}
+
+.chatbot-toggle {
+    width: 62px;
+    height: 62px;
+    border-radius: 999px;
+    border: 1px solid rgba(212, 175, 55, 0.6);
+    background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%);
+    color: #0f0f0f;
+    font-size: 1.4rem;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
+}
+
+.chatbot-toggle:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 0 18px rgba(212, 175, 55, 0.55);
+}
+
+.chatbot-notification {
+    position: absolute;
+    top: 8px;
+    right: 9px;
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: #35e06f;
+    border: 2px solid #0f0f0f;
+}
+
+.chatbot-window {
+    width: min(360px, calc(100vw - 32px));
+    height: 520px;
+    position: absolute;
+    right: 0;
+    bottom: 80px;
+    background: rgba(15, 15, 15, 0.98);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+    display: flex;
+    flex-direction: column;
+    animation: chatbotUp 0.25s ease-out;
+}
+
+.chatbot-header {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.18), rgba(26, 26, 26, 0.95));
+    border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chatbot-kicker {
+    color: #d4af37;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-bottom: 3px;
+}
+
+.chatbot-header h3 {
+    color: #fff;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.chatbot-close {
+    background: transparent;
+    color: #d4af37;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.chatbot-messages {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    background: radial-gradient(circle at top right, rgba(212, 175, 55, 0.08), transparent 35%), #0f0f0f;
+}
+
+.chat-message {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+    align-items: flex-end;
+}
+
+.chat-message.user {
+    justify-content: flex-end;
+}
+
+.chat-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    background: rgba(212, 175, 55, 0.16);
+    color: #d4af37;
+    border: 1px solid rgba(212, 175, 55, 0.28);
+    flex: 0 0 auto;
+}
+
+.chat-message.user .chat-avatar {
+    display: none;
+}
+
+.chat-bubble {
+    max-width: 78%;
+    padding: 11px 13px;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+.chat-message.bot .chat-bubble {
+    background: #1a1a1a;
+    color: #e7e7e7;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom-left-radius: 4px;
+}
+
+.chat-message.user .chat-bubble {
+    background: linear-gradient(135deg, #d4af37, #aa771c);
+    color: #0f0f0f;
+    border-bottom-right-radius: 4px;
+    font-weight: 700;
+}
+
+.chatbot-suggestions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 12px 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: #111;
+}
+
+.chatbot-suggestions button {
+    background: rgba(212, 175, 55, 0.08);
+    color: #d4af37;
+    border: 1px solid rgba(212, 175, 55, 0.26);
+    border-radius: 999px;
+    padding: 7px 10px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.chatbot-suggestions button:hover {
+    background: #d4af37;
+    color: #0f0f0f;
+}
+
+.chatbot-form {
+    display: flex;
+    gap: 10px;
+    padding: 14px;
+    background: #0b0b0b;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.chatbot-form input {
+    flex: 1;
+    min-width: 0;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    background: #151515;
+    color: #fff;
+    border-radius: 999px;
+    padding: 12px 14px;
+    outline: none;
+}
+
+.chatbot-form input:focus {
+    border-color: #d4af37;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.08);
+}
+
+.chatbot-form button {
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%);
+    color: #0f0f0f;
+    cursor: pointer;
+}
+
+@keyframes chatbotUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==========================================
+   7. RESPONSIVE Y MEDIA QUERIES
+   ========================================== */
+@media (max-width: 768px) {
+    .game-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    .result-info {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .chatbot {
+        right: 16px;
+        bottom: 16px;
+    }
+
+    .chatbot-window {
+        bottom: 74px;
+        height: 500px;
+    }
+}

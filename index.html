@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aura Élite | Perfumería Exclusiva</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                brand: {
+                    gold: '#d4af37',
+                    dark: '#0f0f0f',
+                    gray: '#1a1a1a'
+                }
+            },
+            fontFamily: {
+                serif: ['"Playfair Display"', 'serif'],
+                sans: ['"Lato"', 'sans-serif']
+            }
+        }
+    }
+}
+</script>
+
+<style>
+/* ===== GAME (Adaptado a Aura Élite) ===== */
+.game-screen {
+    display: none;
+    width: 100%;
+}
+
+.game-screen.active {
+    display: flex;
+    justify-content: center;
+    animation: fade .4s ease;
+}
+
+.game-card {
+    width: 100%;
+    background: #1a1a1a;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.5);
+}
+
+.game-top {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.game-top h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-family: 'Playfair Display', serif;
+    background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.game-top p {
+    color: #9ca3af;
+    font-weight: 300;
+}
+
+.game-form {
+    display: grid;
+    gap: 15px;
+}
+
+.game-form input,
+.game-form select {
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(15, 15, 15, 0.8);
+    color: white;
+    outline: none;
+    font-size: 1rem;
+    font-family: 'Lato', sans-serif;
+    transition: 0.3s;
+}
+
+.game-form input:focus,
+.game-form select:focus {
+    border-color: #d4af37;
+}
+
+.game-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%);
+    color: #0f0f0f;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.game-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    padding-bottom: 15px;
+}
+
+.game-header small {
+    color: #d4af37;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+}
+
+.progress {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,.05);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+#progressBar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #aa771c, #fcf6ba, #d4af37);
+    transition: .3s;
+}
+
+#question {
+    margin-bottom: 30px;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+}
+
+.answers {
+    display: grid;
+    gap: 15px;
+}
+
+.answer-btn {
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.03);
+    color: white;
+    transition: .3s;
+    font-family: 'Lato', sans-serif;
+}
+
+.answer-btn:hover {
+    background: rgba(212, 175, 55, 0.1);
+    border-color: #d4af37;
+}
+
+.answer-btn.correct {
+    background: rgba(212, 175, 55, 0.2);
+    border-color: #d4af37;
+    color: #d4af37;
+}
+
+.answer-btn.wrong {
+    background: rgba(255, 0, 0, 0.1);
+    border-color: rgba(255, 0, 0, 0.5);
+    color: #ff6b6b;
+}
+
+.feedback {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: 300;
+    color: #d4af37;
+    letter-spacing: 0.05em;
+}
+
+.result-card {
+    text-align: center;
+}
+
+.result-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #d4af37;
+}
+
+.result-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.result-info div {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.result-info span {
+    display: block;
+    color: #9ca3af;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+}
+
+.result-info strong {
+    font-size: 1.5rem;
+    color: #d4af37;
+}
+
+/* Pantalla de carga interna */
+#loadingScreen.loading-screen {
+    position: absolute;
+    inset: 0;
+    background: #0f0f0f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+}
+
+.loading-box {
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.loading-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,.1);
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+#loadingFill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #aa771c, #fcf6ba, #d4af37);
+}
+
+.loading-screen.hide {
+    opacity: 0;
+    pointer-events: none;
+    transition: .5s;
+}
+
+@keyframes fade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media(max-width: 768px) {
+    .game-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    .result-info {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+</head>
+
+<body class="bg-brand-dark text-white">
+
+<header id="navbar" class="fixed top-0 w-full z-50 bg-brand-dark/90 backdrop-blur border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-droplet text-brand-gold text-2xl"></i>
+                <h1 class="font-serif text-2xl tracking-widest">
+                    Aura <span class="text-brand-gold">Élite</span>
+                </h1>
+            </div>
+
+            <nav class="hidden md:flex gap-8 uppercase text-sm tracking-widest">
+                <a href="#inicio" class="hover:text-brand-gold">Inicio</a>
+                <a href="#nosotros" class="hover:text-brand-gold">Quiénes somos</a>
+                <a href="#categorias" class="hover:text-brand-gold">Categorías</a>
+                <a href="#colecciones" class="hover:text-brand-gold">Colecciones</a>
+                <a href="#contacto" class="hover:text-brand-gold">Contacto</a>
+                <a href="#emociones" class="hover:text-brand-gold">Emociones</a>
+                <a href="#juego" class="hover:text-brand-gold">Juego Interactivo</a>
+                <a href="recomendador.html">Recomendador</a>
+            </nav>
+
+            <button id="mobile-menu-btn" class="md:hidden text-2xl text-brand-gold">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden md:hidden bg-brand-gray border-t border-brand-gold/20">
+        <div class="flex flex-col p-6 gap-4 text-center uppercase tracking-widest text-sm">
+            <a href="#inicio">Inicio</a>
+            <a href="#nosotros">Quiénes somos</a>
+            <a href="#categorias">Colecciones</a>
+            <a href="#colecciones">Colecciones</a>
+            <a href="#contacto">Contacto</a>
+            <a href="#emociones">Emociones</a>
+            <a href="#juego">Juego Interactivo</a>
+            <a href="#recomendador">Recomendador</a>
+        </div>
+    </div>
+</header>
+
+<section id="inicio" class="relative h-screen flex items-center justify-center text-center overflow-hidden">
+    <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1600&q=80" class="absolute inset-0 w-full h-full object-cover opacity-40">
+    <div class="absolute inset-0 bg-black/60"></div>
+    <div class="relative z-10 px-4">
+        <p class="uppercase tracking-[0.3em] text-brand-gold mb-4">
+            Perfumería Exclusiva
+        </p>
+        <h1 class="font-serif text-5xl md:text-7xl mb-6">
+            Descubre tu <br>
+            <span class="gold-gradient-text italic">
+                Firma Olfativa
+            </span>
+        </h1>
+        <p class="max-w-2xl mx-auto text-gray-300 mb-10">
+            Fragancias nicho, diseñador y perfumes árabes exclusivos.
+        </p>
+        <a href="#colecciones" class="btn-gold px-8 py-4 uppercase tracking-widest text-sm rounded">
+            Explorar
+        </a>
+    </div>
+</section>
+
+<section id="nosotros" class="py-24 bg-brand-dark relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row gap-16 items-center">
+            <div class="lg:w-1/2 relative">
+                <img src="https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Ingredientes de perfume" class="rounded-t-full shadow-2xl border-2 border-brand-gold/20">
+                <div class="absolute -bottom-6 -right-6 bg-brand-gray border border-brand-gold/30 p-6 rounded-lg hidden md:block">
+                    <p class="font-serif text-3xl text-brand-gold mb-1">10+</p>
+                    <p class="text-sm uppercase tracking-wider text-gray-400">Años de maestría</p>
+                </div>
+            </div>
+
+            <div class="lg:w-1/2">
+                <h4 class="text-brand-gold tracking-[0.2em] text-sm uppercase mb-2">Nuestra Esencia</h4>
+                <h2 class="text-3xl md:text-4xl font-serif mb-6 gold-gradient-text">El Arte de la Perfumería</h2>
+                <div class="mb-8">
+                    <h3 class="text-xl font-serif text-white mb-3 flex items-center gap-3">
+                        <i class="fa-solid fa-book-open text-brand-gold text-sm"></i> Historia
+                    </h3>
+                    <p class="text-gray-400 font-light leading-relaxed text-justify">
+                        Aura Élite nació de una pasión inquebrantable por los aromas que evocan recuerdos. Lo que comenzó como un pequeño atelier en 2025, hoy es un santuario para los amantes de las fragancias exclusivas. Viajamos por el mundo seleccionando extractos puros y esencias unicas e inigualables.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-brand-gray/50 p-6 rounded border border-white/5 hover:border-brand-gold/30 transition-colors">
+                        <h3 class="text-lg font-serif text-white mb-2"><i class="fa-solid fa-gem text-brand-gold mr-2"></i> Misión</h3>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed">Acercar a nuestros clientes a obras de arte olfativas, brindando una experiencia sensorial única y con fragancias que resalten su personalidad.</p>
+                    </div>
+                    <div class="bg-brand-gray/50 p-6 rounded border border-white/5 hover:border-brand-gold/30 transition-colors">
+                        <h3 class="text-lg font-serif text-white mb-2"><i class="fa-regular fa-eye text-brand-gold mr-2"></i> Visión</h3>
+                        <p class="text-gray-400 text-sm font-light leading-relaxed">Ser la boutique de alta perfumería líder, reconocida por su exclusividad, conocimiento experto y el catálogo más exquisito de fragancias árabes, diseñador y nicho.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-serif text-white mb-4">Valores Fundamentales</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <span class="px-4 py-2 bg-brand-gray rounded-full text-sm text-gray-300 border border-brand-gold/20"><i class="fa-solid fa-check text-brand-gold mr-2"></i> Exclusividad</span>
+                        <span class="px-4 py-2 bg-brand-gray rounded-full text-sm text-gray-300 border border-brand-gold/20"><i class="fa-solid fa-check text-brand-gold mr-2"></i> Autenticidad 100%</span>
+                        <span class="px-4 py-2 bg-brand-gray rounded-full text-sm text-gray-300 border border-brand-gold/20"><i class="fa-solid fa-check text-brand-gold mr-2"></i> Sofisticación</span>
+                        <span class="px-4 py-2 bg-brand-gray rounded-full text-sm text-gray-300 border border-brand-gold/20"><i class="fa-solid fa-check text-brand-gold mr-2"></i> Asesoría Experta</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="categorias" class="py-20 bg-brand-gray border-y border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h4 class="text-brand-gold tracking-[0.2em] text-sm uppercase mb-2">Lo que ofrecemos</h4>
+            <h2 class="text-3xl md:text-4xl font-serif text-white mb-4">Nuestras Categorías</h2>
+            <div class="h-px w-24 bg-brand-gold mx-auto"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div class="text-center group">
+                <div class="w-20 h-20 mx-auto bg-brand-dark border border-brand-gold/50 rounded-full flex items-center justify-center mb-6 group-hover:bg-brand-gold transition-colors duration-300">
+                    <i class="fa-solid fa-crown text-2xl text-brand-gold group-hover:text-brand-dark transition-colors"></i>
+                </div>
+                <h3 class="text-xl font-serif text-white mb-3">Perfumería Nicho</h3>
+                <p class="text-gray-400 font-light text-sm leading-relaxed">Creaciones artísticas fuera del mercado comercial. Ingredientes raros, naturales y composiciones atrevidas para quienes buscan exclusividad absoluta.</p>
+            </div>
+
+            <div class="text-center group">
+                <div class="w-20 h-20 mx-auto bg-brand-dark border border-brand-gold/50 rounded-full flex items-center justify-center mb-6 group-hover:bg-brand-gold transition-colors duration-300">
+                    <i class="fa-solid fa-tags text-2xl text-brand-gold group-hover:text-brand-dark transition-colors"></i>
+                </div>
+                <h3 class="text-xl font-serif text-white mb-3">Línea de Diseñador</h3>
+                <p class="text-gray-400 font-light text-sm leading-relaxed">Las casas de moda más prestigiosas del mundo. Fragancias versátiles, sofisticadas y de alta calidad que marcan tendencia a nivel global.</p>
+            </div>
+
+            <div class="text-center group">
+                <div class="w-20 h-20 mx-auto bg-brand-dark border border-brand-gold/50 rounded-full flex items-center justify-center mb-6 group-hover:bg-brand-gold transition-colors duration-300">
+                    <i class="fa-solid fa-moon text-2xl text-brand-gold group-hover:text-brand-dark transition-colors"></i>
+                </div>
+                <h3 class="text-xl font-serif text-white mb-3">Perfumes Árabes</h3>
+                <p class="text-gray-400 font-light text-sm leading-relaxed">El misterio y la opulencia de Oriente. Ouds profundos, ámbares cálidos y presentaciones majestuosas con una duración y proyección bestiales.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="colecciones" class="py-24 bg-brand-gray">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="font-serif text-4xl mb-4">Nuestras Colecciones</h2>
+            <div class="w-24 h-px bg-brand-gold mx-auto"></div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="category-card h-96 rounded-xl" onclick="openModal('nicho')">
+                <img src="https://media.vogue.es/photos/61ed2ff6dd52dacaa3c9fd5f/3:2/w_1600%2Cc_limit/Bodegon_Vogue_4_202.jpg" class="category-img absolute inset-0 w-full h-full object-cover">
+                <div class="category-overlay">
+                    <p class="uppercase text-xs tracking-widest text-brand-gold">Exclusivo</p>
+                    <h3 class="font-serif text-3xl">Nicho</h3>
+                </div>
+            </div>
+
+            <div class="category-card h-96 rounded-xl" onclick="openModal('disenador')">
+                <img src="https://abscents.com.mx/cdn/shop/collections/WhatsApp_Image_2025-01-26_at_4.56.39_PM_3.jpg?v=1737938633&width=2400" class="category-img absolute inset-0 w-full h-full object-cover">
+                <div class="category-overlay">
+                    <p class="uppercase text-xs tracking-widest text-brand-gold">Diseñador</p>
+                    <h3 class="font-serif text-3xl">Diseñador</h3>
+                </div>
+            </div>
+
+            <div class="category-card h-96 rounded-xl" onclick="openModal('arabes')">
+                <img src="https://blog.perfumeriascoqueteo.com/wp-content/uploads/2026/02/guia-mejores-perfumes-arabes-2026-lattafa-afnan-armaf.webp.png" class="category-img absolute inset-0 w-full h-full object-cover">
+                <div class="category-overlay">
+                    <p class="uppercase text-xs tracking-widest text-brand-gold">Oriente</p>
+                    <h3 class="font-serif text-3xl">Árabes</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="emociones" class="py-24 bg-brand-dark">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-12">
+            <p class="uppercase tracking-[0.3em] text-brand-gold text-xs mb-3">Nuevo módulo</p>
+            <h2 class="font-serif text-4xl md:text-5xl mb-4">
+                Sistema de reconocimiento de emociones
+            </h2>
+            <p class="text-gray-300 max-w-3xl mx-auto">
+                Este módulo detecta emociones básicas desde la cámara web, una imagen cargada o selección manual.
+            </p>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+            <div class="bg-brand-gray rounded-2xl p-6 border border-white/10">
+                <h3 class="font-serif text-2xl mb-5">Controles</h3>
+
+                <div class="flex flex-wrap gap-3 mb-5">
+                    <button id="btnStartCamera" class="btn-gold px-4 py-2 rounded-lg">Activar cámara</button>
+                    <button id="btnStopCamera" class="bg-white/10 px-4 py-2 rounded-lg hover:bg-white/20">Detener cámara</button>
+                    <button id="btnAnalyzeCamera" class="bg-white/10 px-4 py-2 rounded-lg hover:bg-white/20">Analizar cámara</button>
+                </div>
+
+                <label class="block mb-2 font-semibold">Cargar imagen</label>
+                <input id="imageInput" type="file" accept="image/*" class="w-full text-sm mb-6" />
+
+                <h4 class="font-semibold mb-3">Selección manual</h4>
+                <div class="grid grid-cols-2 gap-3">
+                    <button class="emotion-btn bg-white/10 px-3 py-2 rounded-lg" data-emotion="happy">Alegría</button>
+                    <button class="emotion-btn bg-white/10 px-3 py-2 rounded-lg" data-emotion="sad">Tristeza</button>
+                    <button class="emotion-btn bg-white/10 px-3 py-2 rounded-lg" data-emotion="angry">Enojo</button>
+                    <button class="emotion-btn bg-white/10 px-3 py-2 rounded-lg" data-emotion="surprised">Sorpresa</button>
+                    <button class="emotion-btn bg-white/10 px-3 py-2 rounded-lg col-span-2" data-emotion="neutral">Neutralidad</button>
+                </div>
+            </div>
+
+            <div class="bg-brand-gray rounded-2xl p-6 border border-white/10">
+                <h3 class="font-serif text-2xl mb-5">Vista previa</h3>
+                <video id="video" autoplay muted playsinline class="w-full rounded-xl bg-black aspect-video object-cover"></video>
+                <img id="imagePreview" alt="Imagen cargada" class="w-full rounded-xl bg-black aspect-video object-cover hidden" />
+                <p id="status" class="mt-4 text-sm text-gray-300">Cargando módulo...</p>
+            </div>
+
+            <div class="bg-brand-gray rounded-2xl p-6 border border-white/10">
+                <h3 class="font-serif text-2xl mb-5">Resultado</h3>
+                <div class="mb-6">
+                    <div id="emotionLabel" class="text-3xl font-bold text-brand-gold">—</div>
+                    <div id="confidenceValue" class="text-lg mt-2">0%</div>
+                    <div id="resultSource" class="text-sm text-gray-400 mt-2">Sin análisis</div>
+                </div>
+                <div id="bars" class="space-y-4"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="juego" class="py-24 bg-brand-dark border-t border-white/5 flex justify-center items-center min-h-screen">
+    <div class="max-w-4xl w-full mx-auto px-6 relative">
+        <div id="loadingScreen" class="loading-screen">
+            <div class="loading-box">
+                <h1 class="font-serif text-3xl gold-gradient-text mb-2">Aura Élite</h1>
+                <p class="text-gray-400 font-light text-sm">Preparando experiencia sensorial...</p>
+                <div class="loading-bar">
+                    <div id="loadingFill"></div>
+                </div>
+                <span id="loadingText" class="text-brand-gold">0%</span>
+            </div>
+        </div>
+
+        <div id="startScreen" class="game-screen active">
+            <div class="game-card">
+                <div class="game-top">
+                    <h2>Descubre tu Experiencia</h2>
+                    <p>Pon a prueba tu conocimiento sobre el mundo de la alta perfumería.</p>
+                </div>
+                <div class="game-form">
+                    <input type="text" id="playerName" placeholder="Ingresa tu nombre">
+                    <select id="difficulty">
+                        <option value="facil">Nivel: Aficionado</option>
+                        <option value="medio" selected>Nivel: Conocedor</option>
+                        <option value="dificil">Nivel: Experto Olfativo</option>
+                    </select>
+                </div>
+                <button id="startBtn" class="game-btn">Iniciar Experiencia</button>
+            </div>
+        </div>
+
+        <div id="gameScreen" class="game-screen">
+            <div class="game-card">
+                <div class="game-header">
+                    <div>
+                        <small>Cliente</small>
+                        <h3 id="playerLabel">Invitado</h3>
+                    </div>
+                    <div>
+                        <small>Puntaje</small>
+                        <h3 id="score">0</h3>
+                    </div>
+                    <div>
+                        <small>Tiempo</small>
+                        <h3 id="timer">15</h3>
+                    </div>
+                </div>
+                <div class="progress">
+                    <div id="progressBar"></div>
+                </div>
+                <h2 id="question">Pregunta aquí</h2>
+                <div id="answers" class="answers"></div>
+                <p id="feedback" class="feedback"></p>
+            </div>
+        </div>
+
+        <div id="resultScreen" class="game-screen">
+            <div class="game-card result-card">
+                <h2>Experiencia Finalizada</h2>
+                <div class="result-info">
+                    <div>
+                        <span>Puntaje</span>
+                        <strong id="finalScore">0</strong>
+                    </div>
+                    <div>
+                        <span>Aciertos</span>
+                        <strong id="correctAnswers">0</strong>
+                    </div>
+                    <div>
+                        <span>Errores</span>
+                        <strong id="wrongAnswers">0</strong>
+                    </div>
+                </div>
+                <p id="resultMessage" class="text-gray-300 mb-6"></p>
+                <button id="restartBtn" class="game-btn">Volver a intentar</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contacto" class="py-24 bg-brand-gray border-t border-white/5"> 
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> 
+        <div class="bg-brand-dark rounded-xl shadow-2xl overflow-hidden flex flex-col lg:flex-row border border-brand-gold/10 relative"> 
+            <div class="absolute top-0 right-0 w-64 h-64 bg-brand-gold/5 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div> 
+            
+            <div class="p-10 lg:w-1/3 border-b lg:border-b-0 lg:border-r border-white/5 flex flex-col justify-between"> 
+                <div> 
+                    <h4 class="text-brand-gold tracking-[0.2em] text-sm uppercase mb-2">Asesoría</h4> 
+                    <h3 class="text-3xl font-serif text-white mb-8">Contáctanos</h3> 
+                    <div class="space-y-6"> 
+                        <div class="flex items-start"> 
+                            <div class="w-10 h-10 rounded-full border border-brand-gold/30 flex items-center justify-center mr-4 shrink-0 text-brand-gold"> 
+                                <i class="fa-solid fa-location-dot"></i> 
+                            </div> 
+                            <div> 
+                                <h4 class="font-serif text-white">Boutique Principal</h4> 
+                                <p class="text-gray-400 text-sm mt-1 font-light">Av. Luis Plata Torres 155, Zona Exclusiva.<br>La Concordia, Ecuador.</p> 
+                            </div> 
+                        </div> 
+                        <div class="flex items-start"> 
+                            <div class="w-10 h-10 rounded-full border border-brand-gold/30 flex items-center justify-center mr-4 shrink-0 text-brand-gold"> 
+                                <i class="fa-brands fa-whatsapp text-lg"></i> 
+                            </div> 
+                            <div> 
+                                <h4 class="font-serif text-white">WhatsApp & Teléfono</h4> 
+                                <p class="text-gray-400 text-sm mt-1 font-light">+593 959169277<br>Atención: Lunes a Sábado, 10am - 7pm</p> 
+                            </div> 
+                        </div> 
+                        <div class="flex items-start"> 
+                            <div class="w-10 h-10 rounded-full border border-brand-gold/30 flex items-center justify-center mr-4 shrink-0 text-brand-gold"> 
+                                <i class="fa-solid fa-envelope"></i> 
+                            </div> 
+                            <div> 
+                                <h4 class="font-serif text-white">Email</h4> 
+                                <p class="text-gray-400 text-sm mt-1 font-light">concierge@auraelite.com</p> 
+                            </div> 
+                        </div> 
+                    </div> 
+                </div> 
+                <div class="mt-12 flex space-x-4"> 
+                    <a href="#" class="text-gray-400 hover:text-brand-gold transition-colors"><i class="fa-brands fa-instagram text-2xl"></i></a> 
+                    <a href="#" class="text-gray-400 hover:text-brand-gold transition-colors"><i class="fa-brands fa-tiktok text-2xl"></i></a> 
+                    <a href="#" class="text-gray-400 hover:text-brand-gold transition-colors"><i class="fa-brands fa-facebook-f text-2xl"></i></a> 
+                </div> 
+            </div> 
+            
+            <div class="p-10 lg:w-2/3 relative z-10"> 
+                <h3 class="text-2xl font-serif text-white mb-2">Encuentra tu esencia ideal</h3> 
+                <p class="text-gray-400 text-sm font-light mb-8">Déjanos tus datos y un experto olfativo se pondrá en contacto contigo.</p> 
+                <form id="contact-form" class="space-y-6"> 
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> 
+                        <div> 
+                            <label class="block text-xs uppercase tracking-wider text-brand-gold mb-2">Nombre Completo *</label> 
+                            <input type="text" required class="w-full bg-brand-dark/50 text-white px-4 py-3 border-b border-gray-600 focus:border-brand-gold outline-none transition-colors font-light placeholder-gray-600" placeholder="Ej. Isabella M."> 
+                        </div> 
+                        <div> 
+                            <label class="block text-xs uppercase tracking-wider text-brand-gold mb-2">Teléfono / WhatsApp *</label> 
+                            <input type="tel" required class="w-full bg-brand-dark/50 text-white px-4 py-3 border-b border-gray-600 focus:border-brand-gold outline-none transition-colors font-light placeholder-gray-600" placeholder="+593..."> 
+                        </div> 
+                    </div> 
+                    <div> 
+                        <label class="block text-xs uppercase tracking-wider text-brand-gold mb-2">¿Qué tipo de aroma buscas?</label> 
+                        <select class="w-full bg-brand-dark/50 text-white px-4 py-3 border-b border-gray-600 focus:border-brand-gold outline-none transition-colors font-light appearance-none"> 
+                            <option value="" class="text-gray-800">Selecciona una preferencia</option> 
+                            <option value="dulce" class="text-gray-800">Amaderados y Fuertes (Oud)</option> 
+                            <option value="fresco" class="text-gray-800">Frescos y Cítricos</option> 
+                            <option value="dulce" class="text-gray-800">Dulces y Gourmand</option> 
+                            <option value="floral" class="text-gray-800">Florales Elegantes</option> 
+                            <option value="asesoria" class="text-gray-800">No lo sé, necesito asesoría</option> 
+                        </select> 
+                    </div> 
+                    <div> 
+                        <label class="block text-xs uppercase tracking-wider text-brand-gold mb-2">Mensaje Adicional</label> 
+                        <textarea rows="3" class="w-full bg-brand-dark/50 text-white px-4 py-3 border-b border-gray-600 focus:border-brand-gold outline-none transition-colors resize-none font-light placeholder-gray-600" placeholder="Cuéntanos qué perfumes sueles usar..."></textarea> 
+                    </div> 
+                    <button type="submit" class="w-full md:w-auto px-10 py-4 btn-gold uppercase tracking-widest text-sm font-bold mt-4 flex items-center justify-center gap-3"> Enviar Mensaje <i class="fa-solid fa-paper-plane"></i> </button> 
+                    <div id="form-msg" class="hidden mt-4 p-4 border border-brand-gold/50 bg-brand-gold/10 text-brand-gold text-sm rounded"> 
+                        <i class="fa-solid fa-check-circle mr-2"></i> Mensaje enviado con éxito. Te contactaremos pronto. 
+                    </div> 
+                </form> 
+            </div> 
+        </div> 
+    </div> 
+</section>
+
+<footer class="bg-[#050505] text-gray-500 py-10 border-t border-brand-gold/20"> 
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center"> 
+        <div class="flex items-center gap-2 mb-4 md:mb-0 opacity-70"> 
+            <i class="fa-solid fa-droplet text-brand-gold text-xl"></i> 
+            <span class="font-serif font-bold text-xl tracking-widest uppercase text-white">Aura <span class="text-brand-gold">Élite</span></span> 
+        </div> 
+        <p class="text-xs tracking-widest uppercase text-center md:text-left"> 
+            &copy; 2026 Aura Élite Perfumery. Todos los derechos reservados. 
+        </p> 
+    </div> 
+</footer>
+
+<div id="chatbot" class="chatbot">
+    <button id="chatbot-toggle" class="chatbot-toggle" aria-label="Abrir chat de asesoría">
+        <i class="fa-solid fa-comments"></i>
+        <span class="chatbot-notification"></span>
+    </button>
+
+    <div id="chatbot-window" class="chatbot-window hidden">
+        <div class="chatbot-header">
+            <div>
+                <p class="chatbot-kicker">Asesoría Aura Élite</p>
+                <h3>Asistente olfativo</h3>
+            </div>
+
+            <button id="chatbot-close" class="chatbot-close" aria-label="Cerrar chat">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div id="chatbot-messages" class="chatbot-messages">
+            <div class="chat-message bot">
+                <div class="chat-avatar">
+                    <i class="fa-solid fa-droplet"></i>
+                </div>
+                <div class="chat-bubble">
+                    Hola, soy el asistente de Aura Élite. Puedo ayudarte a elegir un perfume según tu gusto, presupuesto u ocasión.
+                </div>
+            </div>
+        </div>
+
+        <div class="chatbot-suggestions">
+            <button type="button" data-question="Quiero un perfume dulce">Dulce</button>
+            <button type="button" data-question="Quiero un perfume fresco">Fresco</button>
+            <button type="button" data-question="Perfume para regalo">Regalo</button>
+            <button type="button" data-question="Ver precios">Precios</button>
+        </div>
+
+        <form id="chatbot-form" class="chatbot-form">
+            <input id="chatbot-input" type="text" placeholder="Escribe tu consulta..." autocomplete="off">
+            <button type="submit" aria-label="Enviar mensaje">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<div id="perfume-modal" class="hidden fixed inset-0 z-50 bg-black/90 p-6 overflow-y-auto">
+    <div class="max-w-6xl mx-auto bg-brand-gray rounded-xl overflow-hidden">
+        <div class="flex justify-between items-center p-6 border-b border-white/10">
+            <h2 id="modal-title" class="font-serif text-3xl gold-gradient-text"></h2>
+            <button onclick="closeModal()" class="text-2xl hover:text-brand-gold">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div id="modal-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6"></div>
+    </div>
+</div>
+
+<script src="assets/vendor/face-api.js"></script>
+<script src="assets/js/emociones.js"></script>
+<script src="app.js"></script>
+<script>
+const questionBank = {
+    facil: [
+        { question: "¿Qué es un perfume?", answers: ["Agua con colorante", "Una mezcla aromática de aceites y alcohol", "Solo flores exprimidas", "Un tipo de jabón líquido"], correct: 1 },
+        { question: "¿Dónde es más recomendable aplicar el perfume?", answers: ["En la ropa", "En el cabello", "En los puntos de pulso (muñecas, cuello)", "En el aire y caminar hacia él"], correct: 2 },
+        { question: "¿Qué familia olfativa incluye el aroma de las rosas y jazmines?", answers: ["Amaderada", "Cítrica", "Floral", "Oriental"], correct: 2 },
+        { question: "¿Qué ingrediente aporta un aroma dulce y parecido al postre?", answers: ["El musgo", "La vainilla", "El limón", "La pimienta"], correct: 1 },
+        { question: "¿Es recomendable frotar el perfume en las muñecas tras aplicarlo?", answers: ["Sí, para que caliente", "No, porque rompe las moléculas del aroma", "Solo si es de baja calidad", "Sí, para que dure más"], correct: 1 },
+        { question: "¿Qué fruta pertenece a la familia olfativa cítrica?", answers: ["Manzana", "Fresa", "Bergamota", "Coco"], correct: 2 },
+        { question: "¿Qué sentido utilizamos para percibir las fragancias?", answers: ["El gusto", "El tacto", "La vista", "El olfato"], correct: 3 },
+        { question: "¿De dónde provienen los aceites esenciales tradicionales?", answers: ["Plantas, flores y resinas", "Del agua de mar", "Solo de las frutas", "Se inventan en laboratorios al azar"], correct: 0 },
+        { question: "¿Cuál de estos es un perfume más ligero para el día a día?", answers: ["Extracto de Perfume", "Body Mist / Splash", "Eau de Parfum", "Aceite puro"], correct: 1 },
+        { question: "¿Qué significa 'Eau de Parfum'?", answers: ["Agua de tocador", "Agua de colonia", "Agua de perfume", "Extracto puro"], correct: 2 }
+    ],
+    medio: [
+        { question: "¿Qué es la perfumería 'Nicho'?", answers: ["Perfumes de supermercado", "Creaciones artísticas, exclusivas y de autor", "Perfumes solo para hombres", "Copias de marcas famosas"], correct: 1 },
+        { question: "¿Qué es la 'Pirámide Olfativa'?", answers: ["Un envase en forma de triángulo", "Notas de salida, corazón y fondo", "Una técnica de ventas", "Una familia de perfumes egipcios"], correct: 1 },
+        { question: "¿Cuál de estos formatos tiene la mayor concentración de esencia?", answers: ["Eau de Toilette", "Eau de Cologne", "Extracto de Perfume (Parfum)", "Eau Fraîche"], correct: 2 },
+        { question: "¿Qué es el 'Sillage' (Estela)?", answers: ["El rastro que deja el perfume en el aire", "El envase de cristal", "El alcohol usado", "El color del líquido"], correct: 0 },
+        { question: "¿Qué notas componen principalmente la familia 'Gourmand'?", answers: ["Maderas", "Cítricos", "Aromas comestibles (chocolate, caramelo)", "Rosas blancas"], correct: 2 },
+        { question: "¿Qué ingrediente es conocido como el 'oro líquido' en la perfumería árabe?", answers: ["Almizcle", "Oud (Madera de Agar)", "Ámbar", "Azafrán"], correct: 1 },
+        { question: "¿Qué hace un ingrediente 'fijador' en un perfume?", answers: ["Cambia el color", "Aumenta la estela", "Prolonga la duración del aroma en la piel", "Hace que huela más dulce"], correct: 2 },
+        { question: "¿Qué caracteriza a la familia 'Fougère'?", answers: ["Huele a dulces y vainilla", "Evoca un bosque húmedo (lavanda, musgo)", "Solo tiene flores blancas", "Son notas marinas puras"], correct: 1 },
+        { question: "¿Qué aporta el 'Almizcle' (Musk) a una fragancia?", answers: ["Un olor cítrico y ácido", "Una sensación limpia y de 'segunda piel'", "Huele a caramelo quemado", "Un aroma a tierra mojada"], correct: 1 },
+        { question: "¿Qué notas se evaporan más rápido al aplicar un perfume?", answers: ["Notas de fondo", "Notas de corazón", "Notas de salida (top notes)", "Todas se evaporan igual"], correct: 2 }
+    ],
+    dificil: [
+        { question: "¿Qué antigua técnica extrae aceites de flores delicadas usando grasa animal/vegetal?", answers: ["Destilación", "Enfleurage", "Maceración", "Prensado en frío"], correct: 1 },
+        { question: "¿Qué es originalmente el 'Ámbar Gris'?", answers: ["La resina de un árbol milenario", "Una secreción del cachalote", "Una piedra preciosa derretida", "Un tipo de alga marina"], correct: 1 },
+        { question: "¿Qué famosa molécula sintética huele a madera aterciopelada y limpia?", answers: ["Iso E Super", "Etil Maltol", "Linalool", "Aldehído C-12"], correct: 0 },
+        { question: "¿Qué significa que un perfume sea un 'Flanker'?", answers: ["Que está descontinuado", "Que es una variación de un perfume original exitoso", "Que es 100% natural", "Que se vende sin caja"], correct: 1 },
+        { question: "¿Quién es considerada la primera química perfumista de la historia?", answers: ["Cleopatra", "María Antonieta", "Tapputi (en Mesopotamia)", "Coco Chanel"], correct: 2 },
+        { question: "¿Cuál es el compuesto principal que le da a la Bergamota su aroma característico?", answers: ["Acetato de Linalilo", "Eugenol", "Geraniol", "Cumarina"], correct: 0 },
+        { question: "¿Qué es el 'Gálbano' en la perfumería?", answers: ["Un tipo de rosa", "Una resina de aroma verde, amargo y terroso", "Una madera dulce", "Un derivado del limón"], correct: 1 },
+        { question: "¿A qué huele principalmente la molécula 'Ambroxan'?", answers: ["A rosas recién cortadas", "A chocolate oscuro", "Ámbar gris sintético, mineral y salado", "A humo de incienso"], correct: 2 },
+        { question: "¿Qué describe el término 'Petricor'?", answers: ["El olor de las hojas secas", "El olor a tierra mojada después de la lluvia", "El proceso de filtrado del alcohol", "Una familia olfativa frutal"], correct: 1 },
+        { question: "¿Cuál es considerada la capital mundial del perfume?", answers: ["París, Francia", "Milán, Italia", "Grasse, Francia", "Dubai, EAU"], correct: 2 }
+    ]
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    const startScreen = document.getElementById("startScreen");
+    const gameScreen = document.getElementById("gameScreen");
+    const resultScreen = document.getElementById("resultScreen");
+    const questionText = document.getElementById("question");
+    const answersDiv = document.getElementById("answers");
+    const scoreText = document.getElementById("score");
+    const timerText = document.getElementById("timer");
+    const progressBar = document.getElementById("progressBar");
+    const feedback = document.getElementById("feedback");
+    const finalScore = document.getElementById("finalScore");
+    const correctAnswers = document.getElementById("correctAnswers");
+    const wrongAnswers = document.getElementById("wrongAnswers");
+    const resultMessage = document.getElementById("resultMessage");
+    const playerLabel = document.getElementById("playerLabel");
+
+    let currentQuestions = [];
+    let currentQuestionIndex = 0;
+    let score = 0; 
+    let hits = 0;
+    let fails = 0;
+    let timer = 15;
+    let interval;
+
+    document.getElementById("startBtn").addEventListener("click", startGame);
+    document.getElementById("restartBtn").addEventListener("click", restartGame);
+
+    function startGame() {
+        const player = document.getElementById("playerName").value || "Invitado";
+        const difficulty = document.getElementById("difficulty").value;
+        playerLabel.textContent = player;
+        currentQuestions = questionBank[difficulty];
+        startScreen.classList.remove("active");
+        gameScreen.classList.add("active");
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        clearInterval(interval);
+        timer = 15;
+        timerText.textContent = timer;
+
+        interval = setInterval(() => {
+            timer--;
+            timerText.textContent = timer;
+            if (timer <= 0) {
+                score += 1;
+                fails++;
+                scoreText.textContent = score;
+                feedback.textContent = "⏱️ Tiempo agotado";
+                feedback.style.color = "#ff6b6b";
+                setTimeout(nextQuestion, 1200);
+            }
+        }, 1000);
+
+        const q = currentQuestions[currentQuestionIndex];
+        questionText.textContent = q.question;
+        answersDiv.innerHTML = "";
+
+        q.answers.forEach((answer, index) => {
+            const button = document.createElement("button");
+            button.classList.add("answer-btn");
+            button.textContent = answer;
+            button.onclick = () => checkAnswer(index);
+            answersDiv.appendChild(button);
+        });
+
+        updateProgress();
+    }
+
+    function checkAnswer(index) {
+        clearInterval(interval);
+        const q = currentQuestions[currentQuestionIndex];
+        const buttons = document.querySelectorAll(".answer-btn");
+        buttons.forEach(btn => btn.disabled = true);
+
+        if (index === q.correct) {
+            score += 2;
+            hits++;
+            buttons[index].classList.add("correct");
+            feedback.textContent = "✨ Excelente elección (+2 puntos)";
+            feedback.style.color = "#d4af37";
+        } else {
+            score += 1;
+            fails++;
+            buttons[index].classList.add("wrong");
+            buttons[q.correct].classList.add("correct");
+            feedback.textContent = "❌ Esencia equivocada (+1 punto)";
+            feedback.style.color = "#ff6b6b";
+        }
+
+        scoreText.textContent = score;
+
+        setTimeout(() => {
+            nextQuestion();
+        }, 1500);
+    }
+
+    function nextQuestion() {
+        feedback.textContent = "";
+        currentQuestionIndex++;
+        if (currentQuestionIndex >= currentQuestions.length) {
+            finishGame();
+        } else {
+            loadQuestion();
+        }
+    }
+
+    function finishGame() {
+        gameScreen.classList.remove("active");
+        resultScreen.classList.add("active");
+        finalScore.textContent = score;
+        correctAnswers.textContent = hits;
+        wrongAnswers.textContent = fails;
+
+        if (score >= 18) {
+            resultMessage.textContent = "🏆 ¡Impecable! Eres un experto olfativo. Tienes un conocimiento profundo de la alta perfumería.";
+        } else if (score >= 14) {
+            resultMessage.textContent = "✨ Tienes una excelente base y buen gusto, pero te falta experimentar un poco más para dominar los detalles sutiles.";
+        } else {
+            resultMessage.textContent = "🌱 Estás iniciando en este viaje aromático. Te invitamos a descubrir y experimentar más fragancias en Aura Élite.";
+        }
+    }
+
+    function restartGame() {
+        currentQuestionIndex = 0;
+        score = 0;
+        hits = 0;
+        fails = 0;
+        scoreText.textContent = 0;
+        resultScreen.classList.remove("active");
+        startScreen.classList.add("active");
+    }
+
+    function updateProgress() {
+        const progress = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
+        progressBar.style.width = progress + "%";
+    }
+
+    let progress = 0;
+    const fill = document.getElementById("loadingFill");
+    const text = document.getElementById("loadingText");
+    const screen = document.getElementById("loadingScreen");
+
+    if (fill && text && screen) {
+        const loadInterval = setInterval(() => {
+            progress += 5;
+            fill.style.width = progress + "%";
+            text.textContent = progress + "%";
+
+            if (progress >= 100) {
+                clearInterval(loadInterval);
+                setTimeout(() => {
+                    screen.classList.add("hide");
+                }, 400);
+            }
+        }, 50);
+    }
+});
+</script>
+
+</body>
+</html>

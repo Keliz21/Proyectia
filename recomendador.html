@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Recomendador de Perfumes</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="recomendador.css">
+
+    <!-- FUENTES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ========================= -->
+    <!-- HEADER -->
+    <!-- ========================= -->
+
+    <header class="header">
+
+        <div class="logo">
+            <h1>Luxury Fragrances</h1>
+        </div>
+
+        <nav class="nav">
+            <a href="index.html">Inicio</a>
+            <a href="index.html#categorias">Colecciones</a>
+            <a href="index.html#contacto">Contacto</a>
+            
+        </nav>
+
+    </header>
+
+    <!-- ========================= -->
+    <!-- CONTENEDOR PRINCIPAL -->
+    <!-- ========================= -->
+
+    <main class="contenedor-principal">
+
+        <!-- INTRO -->
+        <section class="intro">
+
+            <h2>Descubre tu perfume ideal</h2>
+
+            <p>
+                Responde algunas preguntas y nuestro sistema te recomendará
+                la fragancia que mejor se adapte a tu estilo y personalidad.
+            </p>
+
+            <button id="btnIniciar" class="btn-iniciar">
+                Comenzar test
+            </button>
+
+        </section>
+
+        <!-- ========================= -->
+        <!-- MODULO DEL TEST -->
+        <!-- ========================= -->
+
+        <section class="contenedor-test oculto" id="contenedorTest">
+
+            <!-- BARRA DE PROGRESO -->
+            <div class="barra-contenedor">
+
+                <div class="barra-progreso" id="barraProgreso"></div>
+
+            </div>
+
+            <!-- TEXTO PROGRESO -->
+            <p class="texto-progreso" id="textoProgreso">
+                Pregunta 1 de 10
+            </p>
+
+            <!-- TARJETA -->
+            <div class="tarjeta-pregunta">
+
+                <!-- PREGUNTA -->
+                <h2 id="pregunta">
+                    Aquí aparecerá la pregunta
+                </h2>
+
+                <!-- OPCIONES -->
+                <div class="opciones" id="opciones">
+
+                    <!-- BOTONES GENERADOS CON JS -->
+
+                    <!-- EJEMPLO -->
+                    <!--
+                    <button class="opcion">
+                        Aroma dulce
+                    </button>
+                    -->
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ========================= -->
+        <!-- RESULTADO FINAL -->
+        <!-- ========================= -->
+
+        <section class="resultado oculto" id="resultado">
+
+            <h2>Tu perfume ideal es:</h2>
+
+            <!-- TARJETA RESULTADO -->
+            <div class="tarjeta-resultado">
+
+                <!-- IMAGEN -->
+                <div class="resultado-imagen">
+
+                    <img id="imagenPerfume"
+                        src="img/perfume-default.png"
+                        alt="Perfume recomendado">
+
+                </div>
+
+                <!-- INFORMACION -->
+                <div class="resultado-info">
+
+                    <h3 id="nombrePerfume">
+                        Nombre del perfume
+                    </h3>
+
+                    <p id="descripcionPerfume">
+                        Descripción del perfume recomendado.
+                    </p>
+
+                    <!-- ATRIBUTOS -->
+                    <div class="atributos">
+
+                        <span class="tag">Elegante</span>
+                        <span class="tag">Nocturno</span>
+                        <span class="tag">Amaderado</span>
+
+                    </div>
+
+                    <!-- BOTONES -->
+                    <div class="acciones">
+
+                        <button id="btnReiniciar" class="btn-secundario">
+                            Volver a intentar
+                        </button>
+
+
+                        <a href="catalogo.html" class="btn-principal">
+                            Ver catálogo
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- SEGUNDA RECOMENDACION -->
+            <div class="segunda-opcion">
+
+                <h3>También podría gustarte:</h3>
+
+                <div class="mini-tarjeta">
+
+                    <img src="catalogo.html" 
+                            alt="Perfume alternativo">
+                    
+
+                    <div>
+
+                        <h4 id="nombreAlternativo">
+                            Perfume alternativo
+                        </h4>
+
+                        <p id="descripcionAlternativa">
+                            Otra opción compatible con tu perfil.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ========================= -->
+    <!-- FOOTER -->
+    <!-- ========================= -->
+
+    <footer class="footer">
+
+        <p>
+            © 2026 Luxury Fragrances - Todos los derechos reservados
+        </p>
+
+    </footer>
+
+    <!-- ========================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ========================= -->
+
+    
+    <script src="recomendador.js"></script>
+
+</body>
+
+</html>

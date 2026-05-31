@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Universo Challenge | UTE-LVT</title>
+  <link rel="stylesheet" href="juego.css" />
+</head>
+<body>
+  <div id="loadingScreen" class="loading-screen" aria-hidden="true">
+    <div class="loading-card">
+      <div class="loading-logo" aria-hidden="true">🎓⚙️</div>
+      <h2>Universo Challenge</h2>
+      <p>Universidad Técnica Luis Vargas Torres de Esmeraldas</p>
+      <div class="loading-bar" aria-hidden="true">
+        <div id="loadingFill" class="loading-fill"></div>
+      </div>
+      <span id="loadingText">Cargando 0%</span>
+    </div>
+  </div>
+
+  <div class="bg-orb orb-1" aria-hidden="true"></div>
+  <div class="bg-orb orb-2" aria-hidden="true"></div>
+  <div class="bg-orb orb-3" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <header class="hero">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">🎓</div>
+        <div>
+          <p class="eyebrow">Universidad Técnica • Esmeraldas • Ecuador</p>
+          <h1>Universo Challenge</h1>
+          <p class="subtitle">
+            Un juego educativo universitario con preguntas de tecnología, redes, bases de datos, programación, lógica y vida académica.
+          </p>
+        </div>
+      </div>
+
+      <div class="hero-badges">
+        <div class="badge">🟢 Educativo</div>
+        <div class="badge">⚪ Interactivo</div>
+        <div class="badge">🔴 Competitivo</div>
+      </div>
+    </header>
+
+    <section id="startScreen" class="screen active">
+      <div class="card start-card">
+        <div class="card-header">
+          <h2>Bienvenido al desafío universitario</h2>
+          <p>Prepara tu mente y elige la dificultad para comenzar.</p>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="playerName">Nombre del jugador</label>
+            <input id="playerName" type="text" maxlength="24" placeholder="Ponga su nombre" />
+          </div>
+
+          <div class="form-group">
+            <label for="difficultySelect">Dificultad</label>
+            <select id="difficultySelect">
+              <option value="facil">Fácil</option>
+              <option value="medio" selected>Media</option>
+              <option value="dificil">Difícil</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="music-row">
+          <button id="soundToggleBtn" class="btn btn-secondary" type="button">🔊 Efectos: ON</button>
+        </div>
+
+        <div class="rules-box">
+          <h3>Reglas</h3>
+          <ul>
+            <li>Responde cada pregunta antes de que termine el tiempo.</li>
+            <li>La velocidad suma bonificaciones adicionales.</li>
+            <li>No se repiten preguntas dentro de una partida.</li>
+            <li>Tu nivel aumenta automáticamente según tu progreso.</li>
+          </ul>
+        </div>
+
+        <div class="start-actions">
+          <button id="startBtn" class="btn btn-primary" type="button">Iniciar juego</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="screen">
+      <div class="dashboard">
+        <aside class="stats-panel">
+          <div class="stat-card">
+            <span class="stat-label">Jugador</span>
+            <strong id="playerLabel">Invitado</strong>
+          </div>
+
+          <div class="stat-card">
+            <span class="stat-label">Dificultad</span>
+            <strong id="difficultyLabel">Media</strong>
+          </div>
+
+          <div class="stat-card">
+            <span class="stat-label">Puntaje</span>
+            <strong id="scoreValue">0</strong>
+          </div>
+
+          <div class="stat-card">
+            <span class="stat-label">Nivel</span>
+            <strong id="levelValue">1</strong>
+          </div>
+
+          <div class="stat-card">
+            <span class="stat-label">Restantes</span>
+            <strong id="remainingValue">0</strong>
+          </div>
+        </aside>
+
+        <section class="game-panel">
+          <div class="question-card card">
+            <div class="question-topline">
+              <span id="categoryTag" class="category-tag">Categoría</span>
+              <span id="roundTag" class="round-tag">Ronda 1</span>
+            </div>
+
+            <div class="question-status-row">
+              <div class="timer-ring" id="timerRing" style="--p: 100;">
+                <div class="timer-inner">
+                  <span class="stat-label">Tiempo</span>
+                  <strong id="timeValue">15</strong>
+                  <small>seg</small>
+                </div>
+              </div>
+
+              <div class="progress-block">
+                <div class="progress-head">
+                  <span>Progreso</span>
+                  <span id="progressText">0%</span>
+                </div>
+                <div class="progress-bar">
+                  <div id="progressFill" class="progress-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <h2 id="questionText" class="question-text">Pulsa iniciar para comenzar.</h2>
+            <p id="feedbackText" class="feedback-text" aria-live="polite"></p>
+
+            <div id="optionsGrid" class="options-grid"></div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="endScreen" class="screen">
+      <div class="card end-card">
+        <div class="card-header">
+          <h2>Partida finalizada</h2>
+          <p>Resultados del reto académico en Universo Challenge.</p>
+        </div>
+
+        <div class="results-grid">
+          <div class="result-box">
+            <span>Puntaje total</span>
+            <strong id="finalScore">0</strong>
+          </div>
+          <div class="result-box">
+            <span>Nivel alcanzado</span>
+            <strong id="finalLevel">1</strong>
+          </div>
+          <div class="result-box">
+            <span>Aciertos</span>
+            <strong id="finalHits">0</strong>
+          </div>
+          <div class="result-box">
+            <span>Fallos</span>
+            <strong id="finalMisses">0</strong>
+          </div>
+        </div>
+
+        <div class="rank-card">
+          <p class="rank-label">Clasificación</p>
+          <h3 id="rankTitle">Aprendiz Tecnológico</h3>
+          <p id="rankMessage" class="rank-message"></p>
+        </div>
+
+        <div class="end-actions">
+          <button id="restartBtn" class="btn btn-primary" type="button">Volver a jugar</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="confettiLayer" class="confetti-layer" aria-hidden="true"></div>
+
+  <script src="juego.js"></script>
+</body>
+</html>
