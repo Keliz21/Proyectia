@@ -167,7 +167,7 @@ const perfumes = [
         imagen: "https://santiagoperfumes.cl/wp-content/uploads/2022/09/4D893306-FA6E-488A-8CB8-E51FD9876C2B.jpeg.webp",
 
         descripcion:
-            "https://santiagoperfumes.cl/wp-content/uploads/2022/09/4D893306-FA6E-488A-8CB8-E51FD9876C2B.jpeg.webp",
+            "Fragancia cálida y lujosa con notas de coñac, canela y vainilla.",
 
         atributos: [
             "calido",
